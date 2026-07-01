@@ -1,0 +1,39 @@
+{
+  "persona": "person_name_or_handle",
+  "sources": [
+    {
+      "id": "source-look-01",
+      "path": "/absolute/path/to/source-photo-01.jpeg",
+      "copy_source": true,
+      "copy_name": "source-01-look.jpeg",
+      "crops": [
+        {
+          "category": "tops",
+          "filename": "source-01-top.png",
+          "box": [340, 250, 720, 640],
+          "note": "top or upper-body clothing from original user photo"
+        },
+        {
+          "category": "bottoms_shoes",
+          "filename": "source-01-bottoms-shoes.png",
+          "box": [420, 520, 900, 760],
+          "note": "pants, skirt, dress lower frame, or shoes from original user photo"
+        }
+      ]
+    },
+    {
+      "id": "source-look-02",
+      "path": "/absolute/path/to/source-photo-02.jpeg",
+      "copy_source": true,
+      "copy_name": "source-02-look.jpeg",
+      "crops": [
+        {
+          "category": "accessories",
+          "filename": "source-02-personal-prop.png",
+          "box_rel": [0.14, 0.14, 0.88, 0.66],
+          "note": "personal accessory or prop that supports this user's identity"
+        }
+      ]
+    }
+  ]
+}
