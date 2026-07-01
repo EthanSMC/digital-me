@@ -1,12 +1,14 @@
 # Digital Me
 
+一个用于创建个人形象 IP 的 **Codex 技能**。
+
 把真人照片或简短描述，快速变成一个可持续复用的个人形象 IP。
 
 目标不是做一张“一次性头像”，而是帮每个人沉淀一套自己的数字形象系统：主形象、身份锚点、提示词种子、常用状态变体，以及可继续扩展的衣服/道具/场景参考。
 
 ## 核心定位
 
-这个 skill 适合用来做：
+这个 Codex skill 适合用来做：
 
 - 个人头像、社交媒体头像、播客/视频/课程形象
 - 个人品牌角色、数字分身、内容配图角色
@@ -76,12 +78,12 @@
 
 ## 仓库内容
 
-- `SKILL.md`：skill 主入口
+- `SKILL.md`：Codex skill 主入口
 - `references/`：工作流、身份建模、提示词、QA 规则
 - `templates/`：身份卡和裁剪配置模板
 - `scripts/`：裁剪、contact sheet、manifest 辅助脚本
 - `examples/ethan/`：Digital Ethan 案例图
-- `digital-me.skill`：可安装的打包文件
+- `digital-me.skill`：可安装到 Codex 的技能包
 
 ## 验证
 
