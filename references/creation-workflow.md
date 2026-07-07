@@ -10,8 +10,9 @@ Default to quick creation. The useful loop is:
 2. Extract a compact identity card.
 3. Create a reusable prompt seed.
 4. Generate one stable main avatar.
-5. Generate a small set of scene variants.
-6. Save the outputs so future sessions can continue.
+5. Generate one social media avatar that is safe for square and circular crops, plus a circular export.
+6. Generate a small set of scene variants.
+7. Save the outputs so future sessions can continue.
 
 Only switch to the full library workflow when the user asks for ongoing reuse, wardrobe extraction, batch variants, or a reusable asset package.
 
@@ -27,9 +28,11 @@ personal_<name>/
 │   ├── identity_card.md
 │   └── prompt_seed.md
 └── variants/
-    ├── 01-profile.png
-    ├── 02-working.png
-    └── 03-explaining.png
+    ├── 01-social-media-avatar.png
+    ├── 01-social-media-avatar-circle.png
+    ├── 02-profile.png
+    ├── 03-working.png
+    └── 04-explaining.png
 ```
 
 ## Full Library Directory
@@ -76,6 +79,8 @@ For each provided photo or existing character image, note:
 - expression/posture: calm, energetic, friendly, analytical, playful, formal.
 - context: creator, teacher, founder, student, designer, operator, community host, etc.
 - unusable details: blur, mask hiding identity, bad angle, cropped body.
+
+If the input is an existing IP cutout, approved main avatar, or previous generated avatar, route social avatar generation through `avatar-generation-practice.md`. Use the strongest image as `primary_identity_reference`; use rejected or weaker attempts only as feedback.
 
 For text-only requests, ask for the one missing piece that most affects the image: intended usage, preferred style, or must-avoid look.
 
@@ -127,9 +132,17 @@ If image generation is available and the user asked for output, generate directl
 
 ## Step 5: Generate Variants
 
-Pick 3-5 states from the user's actual use case:
+Always include one social media avatar variant first:
 
-- profile/avatar.
+- square-safe composition.
+- round-crop safe face, hair, and shoulder framing.
+- no tiny text, busy props, or important details near the corners.
+- clear recognition at small sizes.
+- generated with an image model when identity matters; local scripts can only export the circular crop.
+
+Then pick 3-5 states from the user's actual use case:
+
+- profile/avatar for non-social profile pages.
 - working/creating.
 - explaining/teaching.
 - social/community.

@@ -17,7 +17,7 @@
 
 ## Usage
 
-- [avatar, content illustration, social media, course, product, team page, brand visual]
+- [social media avatar, content illustration, course, product, team page, brand visual]
 
 ## Prompt Seed
 
