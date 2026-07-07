@@ -1,0 +1,57 @@
+[
+  {
+    "image": "video_project/keyframes/01_hook.png",
+    "duration": 4,
+    "top": [
+      {"text": "一句话说清这条视频", "y": 66, "size": 50, "color": "black"}
+    ],
+    "bottom": [
+      {"text": "替换成用户这次的视频钩子", "y": 1660, "size": 38, "color": "orange"}
+    ],
+    "subtitle": ["这条视频要讲清楚：用户这次的视频目标。"]
+  },
+  {
+    "image": "video_project/keyframes/02_context.png",
+    "duration": 5,
+    "top": [
+      {"text": "先给一个上下文", "y": 76, "size": 48, "color": "black"}
+    ],
+    "bottom": [
+      {"text": "问题 / 场景 / 观众为什么要看", "y": 1640, "size": 36, "color": "blue"}
+    ],
+    "subtitle": ["先看为什么这件事重要。"]
+  },
+  {
+    "image": "video_project/keyframes/03_core.png",
+    "duration": 7,
+    "top": [
+      {"text": "核心解释或演示", "y": 76, "size": 48, "color": "black"}
+    ],
+    "bottom": [
+      {"text": "用 Digital Me 做讲述者或示范者", "y": 1640, "size": 36, "color": "orange"}
+    ],
+    "subtitle": ["再看它具体怎么发生，或者具体怎么使用。"]
+  },
+  {
+    "image": "video_project/keyframes/04_example.png",
+    "duration": 6,
+    "top": [
+      {"text": "给一个可感知的例子", "y": 76, "size": 48, "color": "black"}
+    ],
+    "bottom": [
+      {"text": "复用已有变体 / 截图 / 结果画面", "y": 1640, "size": 36, "color": "blue"}
+    ],
+    "subtitle": ["这里放最能证明这个视频主题的画面。"]
+  },
+  {
+    "image": "video_project/keyframes/05_cta.png",
+    "duration": 5,
+    "top": [
+      {"text": "收口到下一步", "y": 76, "size": 48, "color": "black"}
+    ],
+    "bottom": [
+      {"text": "替换成用户想要的 CTA", "y": 1640, "size": 38, "color": "orange"}
+    ],
+    "subtitle": ["最后给你一个可以继续行动的下一步。"]
+  }
+]

@@ -44,5 +44,30 @@ skill-name/
 ├── references/
 ├── scripts/
 ├── templates/
-└── assets/examples/
+└── examples/  # optional low-frequency case assets
 ```
+
+## digital-me-video-practice
+
+Generalized from the first short-video experiment into a request-driven video practice for Digital Me after the avatar system is stable.
+
+Useful carried-over workflow:
+
+- Treat the digital person as the protagonist, not as a product demo prop.
+- Start from the user's requested video, then map existing Digital Me assets to the right shots.
+- Use first-person structure only when the request is a self-introduction or origin story.
+- Keep Chinese text out of generated images where possible; burn readable titles and subtitles locally.
+- Use MiniMax or a real recording for Mandarin voiceover, and avoid shipping API keys in files.
+- Keep `video-use` optional for later precision editing when local still-frame video is no longer enough.
+
+## reference-driven-avatar-practice
+
+Generalized from generating a more accurate personal IP avatar from an existing character cutout plus feedback on a rejected prior attempt.
+
+Useful carried-over workflow:
+
+- Treat the strongest approved cutout or main avatar as the primary identity reference.
+- Treat rejected avatar versions as feedback artifacts, not identity truth.
+- Use image generation for the character image; use local scripts only for deterministic exports such as circular masks.
+- Deliver both a square avatar and a circular transparent export.
+- Copy into external projects with versioned filenames, and replace defaults only after user confirmation.

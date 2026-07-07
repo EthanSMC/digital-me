@@ -14,6 +14,16 @@ If the user wants a fast first version and has not chosen a style, use:
 clean hand-drawn black ink line, sparse accurate color, white or near-white background, realistic but simplified proportions, not a cute mascot, not anime, not corporate stock art
 ```
 
+## Avoid Case Drift
+
+When using built-in examples only as quality references, keep them out of the generation prompt. Do not say "avoid looking like [case name]" inside the prompt; naming a case can still pull the image toward that case. Instead, write positive anchors for the new person:
+
+```text
+Use [new person's specific age range, face shape, hair silhouette, expression, wardrobe, color language, and real-use prop].
+```
+
+For text-only users, do not default to the example's broad silhouette. If no photo is available, choose neutral placeholders or ask for the missing visual anchors rather than falling back to short dark hair, round glasses, white shirt, creator posture, or any other case-specific cluster.
+
 ## Variant Prompt
 
 Use the same prompt seed, then add one scene-specific state:
@@ -24,11 +34,27 @@ Keep the same identity: [人物身份锚点], [脸部和发型锚点]. Create a 
 
 Good default variant set:
 
-- profile/avatar: clear face, strong recognition.
+- social media avatar: square-safe and round-crop safe, clear face and hair, readable at small size, no tiny text or busy props.
+- profile/avatar: clear face, strong recognition for non-social profile pages.
 - working/creating: a real tool or object from the user's work only if useful.
 - explaining/teaching: one hand gesture, simple diagram or note element if needed.
 - social/community: approachable posture, lighter mood.
 - professional/brand: cleaner outfit, more composed pose.
+
+## Reference-Driven Social Avatar Prompt
+
+When the user has an existing cutout, approved main avatar, or rejected previous attempt, read `avatar-generation-practice.md` and use this shape:
+
+```text
+Create a fresh square 1:1 social media profile avatar for [person/IP name], using the provided [primary identity reference] as the primary identity reference.
+Keep the likeness close: [face shape], [hair silhouette], [glasses/accessories], [expression], [wardrobe/color anchors], [public vibe].
+Use a head-and-shoulders close portrait, centered composition, clean light background, round-crop safe framing, and refined [style direction].
+Make it suitable for [platform/use case].
+Improve from the previous attempt by [specific feedback translated into positive constraints].
+No text, no logo, no watermark, no chibi, no anime exaggeration, no 3D render, no overly cute or generic look.
+```
+
+Omit the previous-attempt sentence when there is no rejected attempt.
 
 ## Text-Only User Prompt
 
