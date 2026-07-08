@@ -1,10 +1,13 @@
 {
-  "name": "digital-me",
+  "name": "@ethansmc/digital-me",
   "version": "0.2.0",
   "description": "Install the Digital Me Codex skill with npx.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EthanSMC/digital-me.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "bin": {
     "digital-me": "bin/digital-me.js"

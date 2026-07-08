@@ -35,6 +35,7 @@ class GenericSkillTests(unittest.TestCase):
         self.assertEqual(package["version"], version)
         self.assertIn(f"当前版本：`v{version}`", readme)
         self.assertIn(f"## v{version} 新功能", readme)
+        self.assertIn("@ethansmc/digital-me", readme)
         self.assertIn(f"github:EthanSMC/digital-me#v{version}", readme)
 
     def test_main_skill_is_generic_fast_creator(self):

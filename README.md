@@ -10,10 +10,10 @@
 
 ## 安装
 
-通过 GitHub release tag 使用 `npx` 安装到 Codex：
+通过 npm 使用 `npx` 安装到 Codex：
 
 ```bash
-npx --yes github:EthanSMC/digital-me#v0.2.0
+npx --yes @ethansmc/digital-me
 ```
 
 安装器会把 `digital-me.skill` 解压到 `$CODEX_HOME/skills/digital-me`，如果没有设置 `CODEX_HOME`，默认使用 `~/.codex/skills/digital-me`。安装后重启 Codex 以加载技能。
@@ -21,7 +21,13 @@ npx --yes github:EthanSMC/digital-me#v0.2.0
 如果本地已经安装过旧版本，可以覆盖安装：
 
 ```bash
-npx --yes github:EthanSMC/digital-me#v0.2.0 -- --force
+npx --yes @ethansmc/digital-me -- --force
+```
+
+也可以直接从 GitHub release tag 安装：
+
+```bash
+npx --yes github:EthanSMC/digital-me#v0.2.0
 ```
 
 ## 创作背景
