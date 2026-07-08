@@ -8,6 +8,22 @@
 
 目标不是做一张“一次性头像”，而是帮每个人沉淀一套自己的数字形象系统：主形象、身份锚点、提示词种子、常用状态变体，以及可继续扩展的衣服/道具/场景参考。
 
+## 安装
+
+通过 GitHub release tag 使用 `npx` 安装到 Codex：
+
+```bash
+npx --yes github:EthanSMC/digital-me#v0.2.0
+```
+
+安装器会把 `digital-me.skill` 解压到 `$CODEX_HOME/skills/digital-me`，如果没有设置 `CODEX_HOME`，默认使用 `~/.codex/skills/digital-me`。安装后重启 Codex 以加载技能。
+
+如果本地已经安装过旧版本，可以覆盖安装：
+
+```bash
+npx --yes github:EthanSMC/digital-me#v0.2.0 -- --force
+```
+
 ## 创作背景
 
 这个技能来自一次很具体的需求：我在使用 `ian-xiaohei-illustrations` 做中文正文配图时，很喜欢“小黑”这种稳定、可复用、能承载内容表达的视觉 IP。

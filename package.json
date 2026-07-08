@@ -1,0 +1,24 @@
+{
+  "name": "digital-me",
+  "version": "0.2.0",
+  "description": "Install the Digital Me Codex skill with npx.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EthanSMC/digital-me.git"
+  },
+  "bin": {
+    "digital-me": "bin/digital-me.js"
+  },
+  "files": [
+    "bin/",
+    "digital-me.skill",
+    "README.md",
+    "VERSION"
+  ],
+  "scripts": {
+    "test": "python3 -m unittest tests/test_generic_skill.py"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

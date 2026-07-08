@@ -1,5 +1,6 @@
 from pathlib import Path
 import importlib.util
+import json
 import tempfile
 import unittest
 import zipfile
@@ -28,10 +29,13 @@ class GenericSkillTests(unittest.TestCase):
     def test_readme_version_matches_version_file(self):
         version = read("VERSION").strip()
         readme = read("README.md")
+        package = json.loads(read("package.json"))
 
         self.assertEqual(version, "0.2.0")
+        self.assertEqual(package["version"], version)
         self.assertIn(f"当前版本：`v{version}`", readme)
         self.assertIn(f"## v{version} 新功能", readme)
+        self.assertIn(f"github:EthanSMC/digital-me#v{version}", readme)
 
     def test_main_skill_is_generic_fast_creator(self):
         text = read("SKILL.md")
