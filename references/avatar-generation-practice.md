@@ -69,7 +69,7 @@ variants/01-social-media-avatar.png
 Then export a transparent circular version:
 
 ```bash
-python scripts/export_circle_avatar.py \
+python3 "$SKILL_DIR/scripts/export_circle_avatar.py" \
   --input variants/01-social-media-avatar.png \
   --out variants/01-social-media-avatar-circle.png \
   --size 1024

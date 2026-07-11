@@ -1,6 +1,6 @@
 ---
 name: digital-me
-description: 用于从真人照片、简短描述、已有主形象/cutout 或上一版生成反馈快速创建并使用 Digital Me：任何人的可复用个人形象 IP。适合用户要做个人头像、social media 方形/圆形头像、数字分身、人物形象、个人品牌角色、内容配图角色、根据照片提取身份锚点/穿搭、生成主形象和场景变体、保存 prompt seed 和素材目录，或把已有 Digital Me 资产用于用户指定的视频、短视频、教程、skill/产品讲解、内容封面、课程/播客片头、文章配图等内容实践时。
+description: Use when 用户希望基于真人照片、外貌描述、已有主形象/cutout 或上一版反馈创建或继续使用 Digital Me，包括个人头像、数字分身、个人品牌角色、内容配图角色、身份与穿搭锚点、场景变体、视频、教程、skill/产品讲解、封面、课程或播客片头。
 ---
 
 # Digital Me
@@ -10,6 +10,10 @@ description: 用于从真人照片、简短描述、已有主形象/cutout 或�
 把任何人的照片或描述快速转成可复用的个人形象 IP。优先让用户尽快得到能用的主形象，再按需要沉淀身份卡、提示词和素材目录。
 
 默认不要把某个案例套给新用户。每个人的身份锚点都从他们自己的照片、描述、职业气质、穿搭和使用场景里提炼。
+
+## 定位技能目录
+
+先把当前已加载 `SKILL.md` 所在目录解析为绝对路径并记作 `SKILL_DIR`。执行脚本或复制模板时始终使用 `"$SKILL_DIR/scripts/..."` 和 `"$SKILL_DIR/templates/..."`；不要假设当前工作目录就是技能目录。
 
 ## 先读这些参考
 
@@ -34,14 +38,14 @@ description: 用于从真人照片、简短描述、已有主形象/cutout 或�
 
 1. 提炼身份锚点。
 2. 写 `identity_card.md` 和 `prompt_seed.md`。
-3. 生成 1 张主形象。
-4. 生成 1 张 social media 头像：方形安全构图，圆形裁切后脸、发型和肩部仍清楚。
-5. 生成 3-5 张常用状态变体。
-6. 保存图片和可复用提示词。
+3. 默认只生成用户当前要求的 1 张图；没有指定类型时生成 1 张主形象。
+4. 保存图片和可复用提示词。
+
+用户明确要求头像套装、多个场景或完整素材包时，可以在同一轮生成对应数量。否则等用户确认身份方向后，再扩展 social media 头像或 3-5 张常用状态变体，避免无请求地增加生成成本。
 
 **系统模式只在用户明确要素材库时使用。** 例如用户要长期迭代、整理衣橱、批量裁剪、打包团队成员形象库，才建立完整 `clothing_refs/`、`generated_variants/` 和 manifest。
 
-如果信息不足，只问一个最关键问题：这个形象主要用于头像、内容配图、社交媒体、课程/产品，还是品牌视觉？如果照片和目标已经够清楚，就不要停下来长访谈。
+如果没有照片，而且描述缺少外貌视觉锚点，只问一个最关键问题：请给出 2-3 个稳定特征，例如发型/发色、脸型/眼镜、年龄呈现、常穿颜色，或者补一张参考照片。如果用户明确不要求像本人，就按用途生成“概念角色，不宣称像本人”。已有足够外貌锚点但缺少用途时，再问头像、内容配图、课程/产品还是品牌视觉。如果照片和目标已经够清楚，就不要停下来长访谈。
 
 ### 2. 建立工作目录
 
@@ -60,9 +64,7 @@ personal_<name>/
 ├── person_model/
 │   ├── identity_card.md
 │   └── prompt_seed.md
-└── variants/
-    ├── 01-social-media-avatar.png
-    └── 01-social-media-avatar-circle.png
+└── variants/  # 只有用户要求变体时创建
 ```
 
 系统模式再扩展：
@@ -105,7 +107,7 @@ personal_<name>/
 
 如果用户已有主 cutout、主形象、上一版头像或不满意的生成结果，先读取 `references/avatar-generation-practice.md`。本地脚本只能做圆形裁切、缩放、contact sheet 或 manifest；不要用 Pillow/SVG/canvas 手绘主角。
 
-变体从用户的真实使用场景里选 3-5 个。常见选择：
+用户确认身份方向或明确要求多图时，才从真实使用场景里选变体。常见选择：
 
 - social media 头像：方形安全、圆形裁切安全，脸和发型清楚，无小字或复杂道具。
 - 头像/个人资料状态：半身、清楚、识别度高，可用于非社交平台的 profile 或介绍页。
@@ -114,10 +116,10 @@ personal_<name>/
 - 生活/社交状态：更松弛，但仍保留身份锚点。
 - 专业/品牌状态：更正式，用于官网、简历、团队页。
 
-每张图单独生成，不要一次拼成九宫格。成功图保存到 `variants/` 或 `generated_variants/curated/`。social media 头像生成后，再用本地脚本导出圆形版本：
+每张图单独生成，不要一次拼成九宫格。成功图保存到 `variants/` 或 `generated_variants/curated/`。用户要求 social media 头像时，生成方形图后再用本地脚本导出圆形版本：
 
 ```bash
-python scripts/export_circle_avatar.py --input variants/01-social-media-avatar.png --out variants/01-social-media-avatar-circle.png --size 1024
+python3 "$SKILL_DIR/scripts/export_circle_avatar.py" --input variants/01-social-media-avatar.png --out variants/01-social-media-avatar-circle.png --size 1024
 ```
 
 ### 6. 系统模式：沉淀衣服和素材
@@ -133,16 +135,16 @@ python scripts/export_circle_avatar.py --input variants/01-social-media-avatar.p
 需要批量裁剪时，用：
 
 ```bash
-python scripts/extract_photo_wardrobe_refs.py --config photo_wardrobe_config.json --output personal_<name>/clothing_refs
+python3 "$SKILL_DIR/scripts/extract_photo_wardrobe_refs.py" --config photo_wardrobe_config.json --output personal_<name>/clothing_refs
 ```
 
 用户确认某批生成图可用后，再从生成图里抽取生成版衣服和道具：
 
 ```bash
-python scripts/extract_generated_clothing_refs.py --config generated_variants_config.json --output personal_<name>/generated_clothing_refs
+python3 "$SKILL_DIR/scripts/extract_generated_clothing_refs.py" --config generated_variants_config.json --output personal_<name>/generated_clothing_refs
 ```
 
-配置可参考 `templates/photo_wardrobe_config.example.json` 和 `templates/generated_variants_config.example.json`。
+配置可参考 `"$SKILL_DIR/templates/photo_wardrobe_config.example.json"` 和 `"$SKILL_DIR/templates/generated_variants_config.example.json"`。
 
 ### 7. 使用实践：让 Digital Me 出现在内容里
 
@@ -157,15 +159,15 @@ python scripts/extract_generated_clothing_refs.py --config generated_variants_co
 视频实践可复用：
 
 ```bash
-python scripts/generate_minimax_tts.py --help
-python scripts/render_still_video.py --help
+python3 "$SKILL_DIR/scripts/generate_minimax_tts.py" --help
+python3 "$SKILL_DIR/scripts/render_still_video.py" --help
 ```
 
-如果视频只是首版可发布内容，默认用本地脚本合成。只有遇到多轨剪辑、转场精修、素材太多、静帧节奏不自然或用户明确要更正式的剪辑质感时，再提醒可以把素材包交给 `video-use` 精剪。
+如果视频只是首版可发布内容，默认用本地脚本合成。遇到多轨剪辑、转场精修、素材太多、静帧节奏不自然或用户明确要更正式的剪辑质感时：如果当前环境有视频编辑技能或后端，就交付素材包继续精剪；否则仍输出完整素材包和 shot plan，不依赖未安装的技能名。
 
 ## 运行依赖
 
-最终图像生成需要图像生成能力。Python 3 和 Pillow 推荐用于圆形头像导出、裁剪、contact sheet、manifest 和视频静帧渲染；视频 practice 还需要本地 `ffmpeg`，MiniMax 配音需要 `MINIMAX_API_KEY` 环境变量。
+最终图像生成需要图像生成能力。Python 3 和 Pillow 是必需依赖；先运行 `python3 -m pip install -r "$SKILL_DIR/requirements.txt"`。视频合成还需要本地 `ffmpeg`，MiniMax 配音需要 `MINIMAX_API_KEY` 环境变量。中文字幕字体会自动查找 macOS、Windows 和 Linux 常见字体；也可用 `DIGITAL_ME_FONT` 指定字体文件绝对路径。
 
 ## 示例不是模板
 
@@ -177,7 +179,7 @@ python scripts/render_still_video.py --help
 
 - 主形象和变体保存在哪。
 - `identity_card.md` 和 `prompt_seed.md` 保存在哪。
-- social media 方形头像和圆形导出保存在哪，哪张最适合当头像，哪些适合内容或品牌场景。
+- 如果用户要求了 social media 头像，说明方形头像和圆形导出保存在哪。
 - 如果用户要继续做内容，推荐一个最自然的 practice，例如“用 Digital Me 做教程视频”“介绍某个 skill”或“文章配图”。
 - 下一轮生成应该沿用哪些身份锚点，避免哪些偏差。
 

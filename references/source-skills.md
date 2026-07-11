@@ -58,7 +58,7 @@ Useful carried-over workflow:
 - Use first-person structure only when the request is a self-introduction or origin story.
 - Keep Chinese text out of generated images where possible; burn readable titles and subtitles locally.
 - Use MiniMax or a real recording for Mandarin voiceover, and avoid shipping API keys in files.
-- Keep `video-use` optional for later precision editing when local still-frame video is no longer enough.
+- Keep precision video editing optional and use only a backend available in the current environment.
 
 ## reference-driven-avatar-practice
 

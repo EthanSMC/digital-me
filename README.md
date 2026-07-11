@@ -2,7 +2,7 @@
 
 一个用于创建个人形象 IP 的 **Codex 技能**。
 
-当前版本：`v0.2.0`
+当前版本：`v0.2.1`
 
 把真人照片或简短描述，快速变成一个可持续复用的个人形象 IP。
 
@@ -10,10 +10,10 @@
 
 ## 安装
 
-当前可直接从 GitHub release tag 使用 `npx` 安装到 Codex：
+推荐直接从 npm registry 安装到 Codex：
 
 ```bash
-npx --yes github:EthanSMC/digital-me#v0.2.0
+npx --yes @ethansmc/digital-me
 ```
 
 安装器会把 `digital-me.skill` 解压到 `$CODEX_HOME/skills/digital-me`，如果没有设置 `CODEX_HOME`，默认使用 `~/.codex/skills/digital-me`。安装后重启 Codex 以加载技能。
@@ -21,13 +21,20 @@ npx --yes github:EthanSMC/digital-me#v0.2.0
 如果本地已经安装过旧版本，可以覆盖安装：
 
 ```bash
-npx --yes github:EthanSMC/digital-me#v0.2.0 -- --force
+npx --yes @ethansmc/digital-me -- --force
 ```
 
-npm registry 包发布后，也可以使用更短的 scoped package 命令：
+也可以固定使用 GitHub release tag：
 
 ```bash
-npx --yes @ethansmc/digital-me
+npx --yes github:EthanSMC/digital-me#v0.2.1
+```
+
+技能中的 Python 图像脚本需要 Pillow。安装技能后可运行：
+
+```bash
+SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/digital-me"
+python3 -m pip install -r "$SKILL_DIR/requirements.txt"
 ```
 
 ## 创作背景
@@ -53,7 +60,16 @@ Digital Me 面向想拥有个人视觉资产的人：创作者、学生、独立
 - 把成功图片沉淀成后续可复用的 prompt seed 和素材库
 - 把已经稳定的 Digital Me 用到用户指定的内容实践里，例如短视频、教程、skill/产品讲解、文章配图、封面和课程/播客片头
 
-默认是快速模式：先做出能用的主形象，再决定要不要进一步整理衣橱、manifest、contact sheet 和长期素材库。
+默认是快速模式：只生成用户当前要求的一张图；用户确认身份方向后，再决定要不要扩展头像、场景变体、衣橱、manifest、contact sheet 和长期素材库。
+
+## v0.2.1 新功能（2026-07-11）
+
+- 所有脚本和模板从技能安装目录解析，不再依赖用户当前工作目录。
+- 移除 NumPy 依赖，明确 Pillow 安装方式，并把依赖文件纳入技能包。
+- 视频默认使用 `contain` 保持人物比例，加入 macOS、Windows、Linux 中文字体发现和 `DIGITAL_ME_FONT` 覆盖。
+- 快速模式默认只生成当前请求的一张图，身份确认后再按需扩展，减少不必要的生成成本。
+- 纯文字创建会先收集外貌视觉锚点；不要求相似度时明确标注为概念角色。
+- 新增 `agents/openai.yaml`，并移除对未安装视频技能名称的硬依赖。
 
 ## v0.2.0 新功能（2026-07-07）
 
@@ -118,13 +134,13 @@ Digital Me 把这个过程拆成一个可执行工作流：先识别身份锚点
 
 把身份卡压缩成 `prompt_seed.md`，以后每张图都可以复用这段 seed。
 
-### 4. 生成主形象
+### 4. 生成当前请求的图
 
-主形象优先稳住识别度：脸和发型清楚、姿态简单、背景干净、穿搭符合本人气质。
+默认只生成用户当前要求的一张图；没有指定类型时生成主形象。主形象优先稳住识别度：脸和发型清楚、姿态简单、背景干净、穿搭符合本人气质。
 
 ### 5. 生成变体
 
-默认先生成 1 张 social media 头像，要求方形和圆形裁切都安全、小尺寸仍有识别度；再导出圆形透明版本；最后生成 3-5 张常用状态。每张图单独生成，不拼九宫格。
+用户确认身份方向或明确要求多图后，再生成 social media 头像或 3-5 张常用状态。social media 头像要求方形和圆形裁切都安全、小尺寸仍有识别度，并导出圆形透明版本。每张图单独生成，不拼九宫格。
 
 如果用户已有主形象、cutout 或上一版不满意头像，先把最强参考作为身份锚点，再把上一版反馈翻译成约束。主角必须由图像生成模型生成；Pillow 只用于圆形头像导出、裁剪、contact sheet 等后处理。
 

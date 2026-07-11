@@ -1,6 +1,9 @@
 from pathlib import Path
 import importlib.util
 import json
+import re
+import subprocess
+import sys
 import tempfile
 import unittest
 import zipfile
@@ -31,12 +34,17 @@ class GenericSkillTests(unittest.TestCase):
         readme = read("README.md")
         package = json.loads(read("package.json"))
 
-        self.assertEqual(version, "0.2.0")
+        self.assertEqual(version, "0.2.1")
         self.assertEqual(package["version"], version)
         self.assertIn(f"当前版本：`v{version}`", readme)
         self.assertIn(f"## v{version} 新功能", readme)
         self.assertIn("@ethansmc/digital-me", readme)
         self.assertIn(f"github:EthanSMC/digital-me#v{version}", readme)
+
+    def test_installer_help_promotes_registry_package(self):
+        installer = read("bin/digital-me.js")
+
+        self.assertIn("npx --yes @ethansmc/digital-me", installer)
 
     def test_main_skill_is_generic_fast_creator(self):
         text = read("SKILL.md")
@@ -52,6 +60,51 @@ class GenericSkillTests(unittest.TestCase):
         ]
         for phrase in required_phrases:
             self.assertIn(phrase, text)
+
+    def test_quick_mode_generates_only_the_requested_first_asset(self):
+        text = read("SKILL.md")
+
+        self.assertIn("默认只生成用户当前要求的 1 张图", text)
+        self.assertIn("用户确认身份方向后", text)
+
+    def test_text_only_mode_requires_visual_identity_anchors(self):
+        text = "\n".join([read("SKILL.md"), read("references/prompt-recipes.md")])
+
+        self.assertIn("外貌视觉锚点", text)
+        self.assertIn("概念角色，不宣称像本人", text)
+
+    def test_runtime_commands_resolve_from_skill_directory(self):
+        paths = [
+            "SKILL.md",
+            "references/avatar-generation-practice.md",
+            "references/video-practice.md",
+        ]
+        text = "\n".join(read(path) for path in paths)
+
+        self.assertIn("SKILL_DIR", text)
+        self.assertIsNone(re.search(r"(?m)^(?:python3?|cp) (?:scripts|templates)/", text))
+
+    def test_runtime_dependencies_are_explicit_and_numpy_free(self):
+        requirements = read("requirements.txt")
+        generated_extractor = read("scripts/extract_generated_clothing_refs.py")
+        skill = read("SKILL.md")
+
+        self.assertIn("Pillow", requirements)
+        self.assertNotIn("import numpy", generated_extractor)
+        self.assertIn("Pillow 是必需依赖", skill)
+
+    def test_video_renderer_discovers_cross_platform_cjk_fonts(self):
+        renderer = read("scripts/render_still_video.py")
+
+        self.assertIn("DIGITAL_ME_FONT", renderer)
+        self.assertIn("C:/Windows/Fonts/msyh.ttc", renderer)
+        self.assertIn("/usr/share/fonts/opentype/noto", renderer)
+
+    def test_skill_has_ui_metadata(self):
+        metadata = read("agents/openai.yaml")
+
+        self.assertIn('display_name: "Digital Me"', metadata)
+        self.assertIn("$digital-me", metadata)
 
     def test_main_skill_does_not_default_to_ethan_details(self):
         text = read("SKILL.md")
@@ -142,13 +195,14 @@ class GenericSkillTests(unittest.TestCase):
             self.assertNotIn(path, skill_text)
             self.assertNotIn(path, readme_text)
 
-    def test_default_assets_include_social_media_avatar(self):
+    def test_social_media_avatar_is_generated_only_when_requested(self):
         creation = read("references/creation-workflow.md")
         qa = read("references/qa-checklist.md")
         project_template = read("templates/project_readme.template.md")
 
         required_phrases = [
             "social media avatar",
+            "when requested",
             "square and circular crops",
             "01-social-media-avatar.png",
             "01-social-media-avatar-circle.png",
@@ -206,6 +260,41 @@ class GenericSkillTests(unittest.TestCase):
                 "第一句。\n第二句。\n第三句。\n",
             )
 
+    def test_default_video_fit_preserves_image_aspect_ratio(self):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            project = Path(tmp_dir)
+            source = project / "source.png"
+            shots = project / "shots.json"
+            work = project / "work"
+            Image.new("RGB", (100, 100), (220, 20, 20)).save(source)
+            shots.write_text(
+                json.dumps([{"image": "source.png", "duration": 1}]),
+                encoding="utf-8",
+            )
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/render_still_video.py"),
+                    "--project-dir",
+                    str(project),
+                    "--shots",
+                    str(shots),
+                    "--out",
+                    "final.mp4",
+                    "--work-dir",
+                    str(work),
+                    "--frames-only",
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            frame = Image.open(work / "frames/01.png").convert("RGB")
+            self.assertEqual(frame.getpixel((540, 20)), (255, 255, 255))
+            self.assertEqual(frame.getpixel((540, 960)), (220, 20, 20))
+
     def test_skill_package_contains_only_runtime_skill_files(self):
         with zipfile.ZipFile(ROOT / "digital-me.skill") as package:
             names = set(package.namelist())
@@ -222,6 +311,8 @@ class GenericSkillTests(unittest.TestCase):
             "scripts/export_circle_avatar.py",
             "scripts/render_still_video.py",
             "examples/ethan/main-avatar.png",
+            "requirements.txt",
+            "agents/openai.yaml",
         ]
         for path in required_paths:
             self.assertIn(path, names)

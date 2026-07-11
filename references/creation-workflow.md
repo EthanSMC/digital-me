@@ -9,10 +9,9 @@ Default to quick creation. The useful loop is:
 1. Read photos or the user's description.
 2. Extract a compact identity card.
 3. Create a reusable prompt seed.
-4. Generate one stable main avatar.
-5. Generate one social media avatar that is safe for square and circular crops, plus a circular export.
-6. Generate a small set of scene variants.
-7. Save the outputs so future sessions can continue.
+4. Generate only the one asset the user currently requested; use a main avatar when no type was specified.
+5. Save the output so future sessions can continue.
+6. After the user confirms the identity direction, generate more variants when requested.
 
 Only switch to the full library workflow when the user asks for ongoing reuse, wardrobe extraction, batch variants, or a reusable asset package.
 
@@ -82,7 +81,7 @@ For each provided photo or existing character image, note:
 
 If the input is an existing IP cutout, approved main avatar, or previous generated avatar, route social avatar generation through `avatar-generation-practice.md`. Use the strongest image as `primary_identity_reference`; use rejected or weaker attempts only as feedback.
 
-For text-only requests, ask for the one missing piece that most affects the image: intended usage, preferred style, or must-avoid look.
+For text-only requests without appearance anchors, ask for 2-3 stable visual identity anchors or a reference photo. If the user does not need a likeness, label the output as a concept character rather than claiming it resembles them. Ask about intended usage only after identity information is sufficient.
 
 ## Step 2: Write The Identity Card
 
@@ -132,7 +131,7 @@ If image generation is available and the user asked for output, generate directl
 
 ## Step 5: Generate Variants
 
-Always include one social media avatar variant first:
+Include a social media avatar when requested:
 
 - square-safe composition.
 - round-crop safe face, hair, and shoulder framing.
@@ -140,7 +139,7 @@ Always include one social media avatar variant first:
 - clear recognition at small sizes.
 - generated with an image model when identity matters; local scripts can only export the circular crop.
 
-Then pick 3-5 states from the user's actual use case:
+After the user confirms the identity direction, pick 3-5 states from the user's actual use case when requested:
 
 - profile/avatar for non-social profile pages.
 - working/creating.

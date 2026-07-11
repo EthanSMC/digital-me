@@ -4,9 +4,9 @@
 
 1. Build the identity card from the user's photos or description.
 2. Create a reusable prompt seed.
-3. Generate the main avatar.
-4. Generate one social media avatar for square and circular crops, plus a circular export.
-5. Generate a few practical variants for the user's real use cases.
+3. Generate the one asset currently requested; default to the main avatar when unspecified.
+4. Generate a social media avatar for square and circular crops only when requested.
+5. After identity confirmation, generate practical variants when requested.
 6. Save successful variants and prompts for future reuse.
 
 ## Identity Anchor

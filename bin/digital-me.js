@@ -14,6 +14,7 @@ function usage() {
   console.log(`Digital Me skill installer v${packageJson.version}
 
 Usage:
+  npx --yes @ethansmc/digital-me
   npx --yes github:EthanSMC/digital-me#v${packageJson.version}
   digital-me [--dest <skills-dir>] [--force]
 

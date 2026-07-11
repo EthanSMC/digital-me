@@ -1,0 +1,4 @@
+interface:
+  display_name: "Digital Me"
+  short_description: "Create a reusable personal avatar and content identity"
+  default_prompt: "Use $digital-me to create one reusable personal avatar from my photo or visual description."

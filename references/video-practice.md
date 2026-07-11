@@ -116,7 +116,7 @@
 
 ```bash
 export MINIMAX_API_KEY="..."
-python scripts/generate_minimax_tts.py \
+python3 "$SKILL_DIR/scripts/generate_minimax_tts.py" \
   --text video_project/audio/narration.txt \
   --out video_project/audio/voice.mp3 \
   --voice-id "Chinese (Mandarin)_Sincere_Adult" \
@@ -131,10 +131,10 @@ python scripts/generate_minimax_tts.py \
 轻量版本使用静帧关键帧 + 本地烧字 + TTS：
 
 ```bash
-cp templates/video_shot_plan.example.json video_project/shot_plan.json
-cp templates/video_narration.example.txt video_project/audio/narration.txt
+cp "$SKILL_DIR/templates/video_shot_plan.example.json" video_project/shot_plan.json
+cp "$SKILL_DIR/templates/video_narration.example.txt" video_project/audio/narration.txt
 
-python scripts/render_still_video.py \
+python3 "$SKILL_DIR/scripts/render_still_video.py" \
   --project-dir . \
   --shots video_project/shot_plan.json \
   --audio video_project/audio/voice.mp3 \
@@ -153,16 +153,16 @@ python scripts/render_still_video.py \
 - 课程/播客片头：短、稳定、可复用，少讲细节。
 - 产品/skill demo：重点是问题、动作、结果，不要只讲身份故事。
 
-## video-use 扩展点
+## 精剪扩展点
 
-默认不要引入 `video-use`。当本地脚本能出首版，但遇到下面的问题时提醒用户：
+默认先用本地脚本。当本地脚本能出首版，但遇到下面的问题时提醒用户可以继续精剪：
 
 - 需要更自然的推拉、节拍点、转场、BGM 或多轨声音。
 - 素材多到需要比较多个 pacing 版本。
 - 用户明确要“像正式短视频/剪辑师处理过”的质感。
 - 需要把关键帧、截图、录屏、字幕、BGM 和配音统一编排。
 
-触发后只把素材包交给 `video-use` 精剪；不要让它负责人物建模、文案判断和资产一致性。
+如果当前环境有视频编辑技能或后端，只把素材包交给它精剪；否则交付完整素材包、shot plan 和剪辑要求。不要让下游负责人物建模、文案判断和资产一致性。
 
 ## QA
 

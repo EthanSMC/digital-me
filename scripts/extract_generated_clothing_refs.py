@@ -8,8 +8,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -17,13 +16,14 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def figure_bbox(image: Image.Image, threshold: int = 240) -> tuple[int, int, int, int]:
-    arr = np.array(image.convert("RGB"))
-    mask = (arr[:, :, 0] < threshold) | (arr[:, :, 1] < threshold) | (arr[:, :, 2] < threshold)
-    ys, xs = np.where(mask)
-    if len(xs) == 0:
+    red, green, blue = image.convert("RGB").split()
+    darkest_channel = ImageChops.darker(ImageChops.darker(red, green), blue)
+    foreground = darkest_channel.point(lambda value: 255 if value < threshold else 0)
+    detected = foreground.getbbox()
+    if detected is None:
         return 0, 0, image.width, image.height
 
-    x0, y0, x1, y1 = int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
+    x0, y0, x1, y1 = detected
     margin_x = int((x1 - x0) * 0.08)
     margin_y = int((y1 - y0) * 0.04)
     return (
@@ -145,4 +145,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

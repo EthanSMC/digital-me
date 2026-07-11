@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -22,6 +23,18 @@ PALETTE = {
     "red": "#d93824",
     "white": "#ffffff",
 }
+FONT_CANDIDATES = [
+    "/System/Library/Fonts/PingFang.ttc",
+    "/System/Library/Fonts/Hiragino Sans GB.ttc",
+    "/System/Library/Fonts/STHeiti Medium.ttc",
+    "/Library/Fonts/Arial Unicode.ttf",
+    "C:/Windows/Fonts/msyh.ttc",
+    "C:/Windows/Fonts/msyhbd.ttc",
+    "C:/Windows/Fonts/simhei.ttf",
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+    "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+]
 
 
 def run(cmd: list[str], *, cwd: Path | None = None) -> None:
@@ -40,12 +53,8 @@ def resolve_path(project_dir: Path, value: str) -> Path:
 
 
 def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
-    candidates = [
-        "/System/Library/Fonts/PingFang.ttc",
-        "/System/Library/Fonts/Hiragino Sans GB.ttc",
-        "/System/Library/Fonts/STHeiti Medium.ttc" if bold else "/System/Library/Fonts/STHeiti Light.ttc",
-        "/Library/Fonts/Arial Unicode.ttf",
-    ]
+    configured = os.environ.get("DIGITAL_ME_FONT")
+    candidates = ([configured] if configured else []) + FONT_CANDIDATES
     for candidate in candidates:
         path = Path(candidate)
         if path.exists():
@@ -273,7 +282,7 @@ def main() -> None:
     parser.add_argument("--audio", type=Path)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--work-dir", type=Path)
-    parser.add_argument("--fit", choices=["contain", "crop", "stretch"], default="stretch")
+    parser.add_argument("--fit", choices=["contain", "crop", "stretch"], default="contain")
     parser.add_argument("--frames-only", action="store_true")
     parser.add_argument("--narration-out", type=Path)
     args = parser.parse_args()

@@ -58,13 +58,13 @@ Omit the previous-attempt sentence when there is no rejected attempt.
 
 ## Text-Only User Prompt
 
-When no photos are available, ask for one concise input first if the prompt lacks visual anchors:
+When no photos are available and the prompt lacks 外貌视觉锚点, ask for one concise input first:
 
 ```text
-What should this person's image mainly communicate: professional, friendly, playful, expert, creator, teacher, founder, or something else?
+Please share 2-3 stable visual traits, such as hair shape/color, face shape/glasses, age presentation, and usual clothing colors, or provide one reference photo.
 ```
 
-Then build the prompt from the answer. Do not invent sensitive traits. If visual identity is missing, use neutral, non-specific language.
+Then build the prompt from the answer. Do not invent sensitive traits. If the user explicitly does not need a likeness, create a “概念角色，不宣称像本人” and use neutral, non-specific identity language.
 
 ## Generated Wardrobe Reuse
 
